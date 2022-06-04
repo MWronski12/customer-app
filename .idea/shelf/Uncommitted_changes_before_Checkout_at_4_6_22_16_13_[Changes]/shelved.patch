@@ -1,0 +1,18 @@
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\nbuildscript {\n    repositories {\n        google()\n    }\n\n    dependencies {\n        classpath \"androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2\"\n    }\n}\n\nplugins {\n    id 'com.android.application' version '7.2.0' apply false\n    id 'com.android.library' version '7.2.0' apply false\n    id 'org.jetbrains.kotlin.android' version '1.6.21' apply false\n}\n\ntask clean(type: Delete) {\n    delete rootProject.buildDir\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build.gradle b/build.gradle
+--- a/build.gradle	(revision 12c705e0636e2535bee6cf2cb79a068ce8264aaf)
++++ b/build.gradle	(date 1654355579888)
+@@ -6,6 +6,7 @@
+ 
+     dependencies {
+         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.4.2"
++        classpath 'com.google.gms:google-services:4.3.10'
+     }
+ }
+ 

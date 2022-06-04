@@ -1,0 +1,17 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\n    id 'com.android.application'\n    id 'org.jetbrains.kotlin.android'\n    id \"androidx.navigation.safeargs.kotlin\"\n    id 'com.google.gms.google-services'\n}\n\nandroid {\n    compileSdk 32\n\n    defaultConfig {\n        applicationId \"com.example.disago_customer\"\n        minSdk 21\n        targetSdk 32\n        versionCode 1\n        versionName \"1.0\"\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n    buildFeatures {\n        dataBinding true\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    kotlinOptions {\n        jvmTarget = '1.8'\n    }\n}\n\ndependencies {\n\n    // Kotlin\n    implementation 'androidx.core:core-ktx:1.8.0'\n\n    // App Compat\n    implementation 'androidx.appcompat:appcompat:1.4.2'\n\n    // Material\n    implementation 'com.google.android.material:material:1.6.1'\n\n    // Constraint Layout\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'\n\n    // Testing\n    testImplementation 'junit:junit:4.13.2'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n\n    // Retrofit\n    implementation \"com.squareup.retrofit2:retrofit:2.9.0\"\n    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'\n    implementation \"com.squareup.moshi:moshi-kotlin:1.8.0\"\n\n    // ViewModel\n    implementation \"androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0-rc01\"\n\n    // Navigation\n    implementation \"androidx.navigation:navigation-fragment-ktx:2.4.2\"\n    implementation \"androidx.navigation:navigation-ui-ktx:2.4.2\"\n\n    // Firebase\n    implementation platform('com.google.firebase:firebase-bom:30.1.0')\n\n    // Declare the dependencies for any other desired Firebase products\n    // For example, declare the dependencies for Firebase Authentication and Cloud Firestore\n    implementation 'com.google.firebase:firebase-auth-ktx'\n    implementation 'com.google.firebase:firebase-firestore-ktx'\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 7baefbfd36bd2aec22aeaeeffde582e075dca919)
++++ b/app/build.gradle	(date 1654355613320)
+@@ -74,4 +74,4 @@
+     // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
+     implementation 'com.google.firebase:firebase-auth-ktx'
+     implementation 'com.google.firebase:firebase-firestore-ktx'
+-}
+\ No newline at end of file
++}

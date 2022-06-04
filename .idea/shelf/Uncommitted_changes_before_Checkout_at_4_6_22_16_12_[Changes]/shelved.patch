@@ -1,0 +1,50 @@
+Index: app/google-services.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/google-services.json b/app/google-services.json
+new file mode 100644
+--- /dev/null	(date 1654355504972)
++++ b/app/google-services.json	(date 1654355504972)
+@@ -0,0 +1,39 @@
++{
++  "project_info": {
++    "project_number": "1089126828340",
++    "project_id": "disago-a1401",
++    "storage_bucket": "disago-a1401.appspot.com"
++  },
++  "client": [
++    {
++      "client_info": {
++        "mobilesdk_app_id": "1:1089126828340:android:e440f3558d4d11124ebd61",
++        "android_client_info": {
++          "package_name": "com.example.disago_customer"
++        }
++      },
++      "oauth_client": [
++        {
++          "client_id": "1089126828340-qlh9uhg7up6bqbov0a8bmvou8ds99gff.apps.googleusercontent.com",
++          "client_type": 3
++        }
++      ],
++      "api_key": [
++        {
++          "current_key": "AIzaSyCSBxk4Rs0m56PaKA7Pa-qJpiAW-sdfyzY"
++        }
++      ],
++      "services": {
++        "appinvite_service": {
++          "other_platform_oauth_client": [
++            {
++              "client_id": "1089126828340-qlh9uhg7up6bqbov0a8bmvou8ds99gff.apps.googleusercontent.com",
++              "client_type": 3
++            }
++          ]
++        }
++      }
++    }
++  ],
++  "configuration_version": "1"
++}
+\ No newline at end of file
