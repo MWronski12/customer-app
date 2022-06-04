@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1089126828340",
+    "project_id": "disago-a1401",
+    "storage_bucket": "disago-a1401.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089126828340:android:e440f3558d4d11124ebd61",
+        "android_client_info": {
+          "package_name": "com.example.disago_customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089126828340-qlh9uhg7up6bqbov0a8bmvou8ds99gff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSBxk4Rs0m56PaKA7Pa-qJpiAW-sdfyzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089126828340-qlh9uhg7up6bqbov0a8bmvou8ds99gff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
