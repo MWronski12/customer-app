@@ -3,41 +3,39 @@ package com.example.disago_customer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.disago_customer.firestore.DisagoApi
+import com.example.disago_customer.firestore.documents.Customer
+import com.example.disago_customer.firestore.fields.RideStatus
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-<<<<<<< HEAD
-    private var db = Firebase.firestore
-=======
-    val db = Firebase.firestore
->>>>>>> google_maps_API
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-<<<<<<< HEAD
-        val userRef = db.collection("customers").document("mZRxkL5MdDjyM34EXdd9")
-        db.collection("test")
-            .add(userRef)
-            .addOnSuccessListener { documentReference ->
-                Log.d("DEBUG", "DocumentSnapshot written with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w("DEBUG", "Error adding document", e)
-=======
-        db.collection("users")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d("DEBUG", "${document.id} => ${document.data}")
-                }
-            }
-            .addOnFailureListener { exception ->
-                Log.w("DEBUG", "Error getting documents.", exception)
->>>>>>> google_maps_API
-            }
+
+//          CREATE CUSTOMER TEST
+//        val id = "sldkfjnsdlkfgnj"
+//        val customer = Customer("m", "w", "w", "w", "w", 10.0)
+//
+//        val api = DisagoApi(db)
+//        api.createCustomer(customer, id)
+
+//        FETCH CUSTOMER TEST
+//        val id = "mZRxkL5MdDjyM34EXdd9"
+//        val api = DisagoApi(db)
+//        api.getCustomer(id)
+
+//        FETCH DRIVER TEST
+        val id = "At1ZdTE8uZS0F59YOI61"
+        val api = DisagoApi(db)
+        api.getDriver(id)
+
+
     }
 }

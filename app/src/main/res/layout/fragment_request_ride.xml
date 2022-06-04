@@ -49,6 +49,7 @@
         <TextView
             android:id="@+id/ride_info_text"
             style="@style/text"
+            android:text="@{viewModel.priceString}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/confirm_ride_request_button" />
 

@@ -34,6 +34,9 @@ class RequestRideFragment : Fragment() {
         binding.requestRideButton.setOnClickListener {
             Log.d("DEBUG", "Button clicked")
 
+            viewModel.originLocation = binding.pickupLocationEditText.text.toString()
+            viewModel.destinationLocation = binding.destinationLocationEditText.text.toString()
+
             viewModel.onRequestRide(
                 binding.pickupLocationEditText.text.toString(),
                 binding.destinationLocationEditText.text.toString()
