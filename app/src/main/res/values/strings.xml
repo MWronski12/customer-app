@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">disago-customer</string>
+    <string name="pickup_location">Pickup location</string>
+    <string name="destination_location">Destination location</string>
+    <string name="request_ride">Request a ride</string>
+    <string name="confirm_request_ride">Confirm the ride request</string>
 </resources>
