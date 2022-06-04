@@ -1,4 +1,4 @@
-package com.example.disago_customer
+package com.example.disago_customer.screens
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,9 +9,11 @@ import com.example.disago_customer.network.GoogleMapsApi
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-const val PRICE_PER_KM = 2
+class RequestRideViewModel: ViewModel() {
 
-class MainActivityViewModel: ViewModel() {
+    companion object {
+        private const val PRICE_PER_KM = 2
+    }
 
     // TODO: How to properly store and reference API keys
     private val key = "AIzaSyA3nPbG6U73k9JF9a_2GmwQEcxVZgSrRyg"
@@ -30,6 +32,7 @@ class MainActivityViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 val result = GoogleMapsApi.retrofitService.get(origin, destination, key)
+                // TODO: How to handle null assertion and varying API response format
                 val price = result.routes[0].legs!![0]?.distance?.value!! / 1000 * PRICE_PER_KM
                 _response.value = "Price: $price"
 
