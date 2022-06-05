@@ -67,11 +67,13 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
     implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
 
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.2'
+
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
-
-    // Declare the dependencies for any other desired Firebase products
-    // For example, declare the dependencies for Firebase Authentication and Cloud Firestore
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
 }

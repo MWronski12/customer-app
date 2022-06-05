@@ -1,4 +1,4 @@
-package com.example.disago_customer.screens
+package com.example.disago_customer.screens.request_ride
 
 import android.os.Bundle
 import android.util.Log
@@ -41,6 +41,16 @@ class RequestRideFragment : Fragment() {
                 binding.pickupLocationEditText.text.toString(),
                 binding.destinationLocationEditText.text.toString()
             )
+        }
+
+        // TODO: Use Firebase.auth.currentUser.id when implemented
+        val signedInUserId = "mZRxkL5MdDjyM34EXdd9"
+        binding.confirmRideRequestButton.setOnClickListener {
+            // Cannot confirm ride if the price was not calculated
+            if (viewModel.price.value == null) {
+                return@setOnClickListener
+            }
+            viewModel.onConfirmRideRequest(signedInUserId)
         }
 
         return binding.root

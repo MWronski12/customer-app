@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.disago_customer.screens.RequestRideViewModel" />
+            type="com.example.disago_customer.screens.request_ride.RequestRideViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,11 +47,18 @@
             app:layout_constraintTop_toBottomOf="@+id/request_ride_button" />
 
         <TextView
-            android:id="@+id/ride_info_text"
+            android:id="@+id/ride_price_text"
             style="@style/text"
             android:text="@{viewModel.priceString}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/confirm_ride_request_button" />
+
+        <TextView
+            android:id="@+id/ride_status_text"
+            style="@style/text"
+            android:text="@{viewModel.statusString}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ride_price_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

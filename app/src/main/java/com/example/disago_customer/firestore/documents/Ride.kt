@@ -11,5 +11,5 @@ data class Ride(
     val originLocation: String,
     val destinationLocation: String,
     val price: Double,
-    var status: String,
+    var status: String?
 )

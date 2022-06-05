@@ -11,33 +11,37 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 
 interface DisagoApiInterface {
 
     // Customer interactions
-    fun getCustomer(userId: String): Customer?
-    fun createCustomer(customer: Customer, userId: String): DocumentReference?
+    suspend fun getCustomer(userId: String): Customer?
+    suspend fun createCustomer(customer: Customer, userId: String): DocumentReference?
+//    suspend fun updateCustomerBalance()
 
     // Driver Interactions
-    fun getDriver(userId: String): Driver?
-    fun createDriver(driver: Driver, userId: String): DocumentReference?
+    suspend fun getDriver(userId: String): Driver?
+    suspend fun createDriver(driver: Driver, userId: String): DocumentReference?
 
-    //    fun getDriversAccumulatedRating(driverId: String): String
+    //    suspend fun getDriversAccumulatedRating(driverId: String): String
 //
 //    // Ride Interactions
     fun createRide(ride: Ride): DocumentReference?
-    fun updateRideStatus(rideId: String, status: String): Boolean
-//    fun listRides(): List<Ride?>
+    suspend fun updateRideStatus(rideId: String, status: String): Boolean
+//    suspend fun listRides(): List<Ride?>
 //
 //    // Review Interactions
-//    fun createReview(ride: Ride): Review?
+//    suspend fun createReview(ride: Ride): Review?
 }
 
 
 class DisagoApi(private val db: FirebaseFirestore) : DisagoApiInterface {
 
-    override fun getCustomer(userId: String): Customer? {
+    override suspend fun getCustomer(userId: String): Customer? {
 
         var customer: Customer? = null
 
@@ -65,7 +69,7 @@ class DisagoApi(private val db: FirebaseFirestore) : DisagoApiInterface {
         return customer
     }
 
-    override fun getDriver(userId: String): Driver? {
+    override suspend fun getDriver(userId: String): Driver? {
 
         var driver: Driver? = null
 
@@ -95,13 +99,13 @@ class DisagoApi(private val db: FirebaseFirestore) : DisagoApiInterface {
 
     // Call this function right after a new user signs up with firebase auth
     // It creates customer object in firestore with user profile data
-    override fun createCustomer(customer: Customer, userId: String): DocumentReference? {
+    override suspend fun createCustomer(customer: Customer, userId: String): DocumentReference? {
 
         var result: DocumentReference? = null
         val customerRef = db.collection("customers").document(userId)
 
         customerRef
-            .set(customer.toHashMap())
+            .set(customer)
             .addOnSuccessListener {
                 result = customerRef
                 Log.d("DEBUG", "New customer with id=$userId created")
@@ -115,13 +119,13 @@ class DisagoApi(private val db: FirebaseFirestore) : DisagoApiInterface {
 
     // Call this function right after a new user signs up with firebase auth
     // It creates driver object in firestore with user profile data
-    override fun createDriver(driver: Driver, userId: String): DocumentReference? {
+    override suspend fun createDriver(driver: Driver, userId: String): DocumentReference? {
 
         var result: DocumentReference? = null
-        val driverRef = db.collection("customers").document(userId)
+        val driverRef = db.collection("drivers").document(userId)
 
         driverRef
-            .set(driver.toHashMap())
+            .set(driver)
             .addOnSuccessListener {
                 result = driverRef
                 Log.d("DEBUG", "New driver with id=$userId created")
@@ -137,19 +141,21 @@ class DisagoApi(private val db: FirebaseFirestore) : DisagoApiInterface {
 
         var result: DocumentReference? = null
 
-        db.collection("rides")
-            .add(ride)
-            .addOnSuccessListener { newRideRef ->
-                result = newRideRef
-                Log.d("DEBUG", "New ride with id=${newRideRef.id} created")
-            }
-            .addOnFailureListener { e ->
-                Log.d("DEBUG", "Failed to create Ride: ${e.message}")
-            }
+        GlobalScope.launch {
+            db.collection("rides")
+                .add(ride)
+                .addOnSuccessListener { newRideRef ->
+                    Log.d("DEBUG", "New ride with id=${newRideRef.id} created")
+                }
+                .addOnFailureListener { e ->
+                    Log.d("DEBUG", "Failed to create Ride: ${e.message}")
+                }
+        }
+
         return result
     }
 
-    override fun updateRideStatus(rideId: String, status: String): Boolean {
+    override suspend fun updateRideStatus(rideId: String, status: String): Boolean {
 
         val data = hashMapOf<String, Any>(
             "status" to status
