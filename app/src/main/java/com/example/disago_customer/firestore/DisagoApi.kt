@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 
 interface DisagoApiInterface {
@@ -30,7 +31,7 @@ interface DisagoApiInterface {
     //    suspend fun getDriversAccumulatedRating(driverId: String): String
 //
 //    // Ride Interactions
-    fun createRide(ride: Ride): DocumentReference?
+    suspend fun createRide(ride: Ride): DocumentReference?
     suspend fun updateRideStatus(rideId: String, status: String): Boolean
 //    suspend fun listRides(): List<Ride?>
 //
@@ -137,20 +138,17 @@ class DisagoApi(private val db: FirebaseFirestore) : DisagoApiInterface {
         return result
     }
 
-    override fun createRide(ride: Ride): DocumentReference? {
+    override suspend fun createRide(ride: Ride): DocumentReference? {
 
-        var result: DocumentReference? = null
-
-        GlobalScope.launch {
-            db.collection("rides")
-                .add(ride)
-                .addOnSuccessListener { newRideRef ->
-                    Log.d("DEBUG", "New ride with id=${newRideRef.id} created")
-                }
-                .addOnFailureListener { e ->
-                    Log.d("DEBUG", "Failed to create Ride: ${e.message}")
-                }
-        }
+        val result = db.collection("rides")
+            .add(ride)
+            .addOnSuccessListener { newRideRef ->
+                Log.d("DEBUG", "New ride with id=${newRideRef.id} created")
+            }
+            .addOnFailureListener { e ->
+                Log.d("DEBUG", "Failed to create Ride: ${e.message}")
+            }
+            .await()
 
         return result
     }

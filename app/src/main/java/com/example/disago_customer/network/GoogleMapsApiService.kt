@@ -1,9 +1,11 @@
 package com.example.disago_customer.network
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.example.disago_customer.network.directions_api_response.Distance
 import com.example.disago_customer.network.directions_api_response.Duration
 import com.example.disago_customer.network.directions_api_response.GoogleMapsApiResponse
+import com.example.disago_customer.screens.request_ride.PRICE_PER_KM
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.*
@@ -53,14 +55,16 @@ private const val key = "AIzaSyA3nPbG6U73k9JF9a_2GmwQEcxVZgSrRyg"
 
 // EXAMPLE USAGE FOR LAUNCHING IN VIEW MODEL
 //    private val price: Double? = null
-//    fun onRequestRide(origin: String, destination: String) {
-//        viewModelScope.launch {
-//            val data = getGoogleMapsApiResponseRelevantData(origin, destination)
-//            if (data != null) {
-//                price.value = data.distance.value / 1000.0 * PRICE_PER_KM
+//fun onRequestRide(origin: String, destination: String) {
+//    viewModelScope.launch(Dispatchers.IO) {
+//        val data = getGoogleMapsApiResponseRelevantData(origin, destination)
+//        if (data != null) {
+//            withContext(Dispatchers.Main) {
+//                _price.value = data.distance.value / 1000.0 * PRICE_PER_KM
 //            }
 //        }
 //    }
+//}
 suspend fun getGoogleMapsApiResponseRelevantData(
     origin: String,
     destination: String

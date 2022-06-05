@@ -16,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,10 +27,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val docRef = db.collection("test").document("123")
-        GlobalScope.launch(Dispatchers.IO) {
-            docRef.set(hashMapOf<String, Any>("bro" to "eat sth!")).result
-        }
+//        val docRef = db.collection("test").document("123")
+//        GlobalScope.launch(Dispatchers.IO) {
+//            docRef.set(hashMapOf<String, Any>("bro" to "eat sth!")).await()
+//        }
 
 
 

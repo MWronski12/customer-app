@@ -11,7 +11,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 const val PRICE_PER_KM = 0.79
 
@@ -41,10 +43,12 @@ class RequestRideViewModel : ViewModel() {
 
 
     fun onRequestRide(origin: String, destination: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val data = getGoogleMapsApiResponseRelevantData(origin, destination)
             if (data != null) {
-                _price.value = data.distance.value / 1000.0 * PRICE_PER_KM
+                withContext(Dispatchers.Main) {
+                    _price.value = data.distance.value / 1000.0 * PRICE_PER_KM
+                }
             }
         }
     }
@@ -59,17 +63,18 @@ class RequestRideViewModel : ViewModel() {
             originLocation,
             destinationLocation,
             price.value!!,
-            null
+            RideStatus.REQUESTED
         )
 
-        val newRide = disagoApi.createRide(ride)
-        if (newRide != null) {
-            Log.d("DEBUG", "Ride id: ${newRide!!.id}")
-            attachRideStatusListener(newRide!!)
-        } else {
-            Log.d("DEBUG", "newRide=null")
+        viewModelScope.launch(Dispatchers.IO) {
+            val newRide = disagoApi.createRide(ride)
+            if (newRide != null) {
+                Log.d("DEBUG", "Ride id: ${newRide.id}")
+                attachRideStatusListener(newRide)
+            } else {
+                Log.d("DEBUG", "newRide=null")
+            }
         }
-
     }
 
     private fun attachRideStatusListener(rideRef: DocumentReference) {
@@ -79,16 +84,12 @@ class RequestRideViewModel : ViewModel() {
             }
             if (snapshot != null && snapshot.exists()) {
                 Log.d("DEBUG", "Ride status changed: ${snapshot.data!!["status"]}")
-                if (snapshot.data!!["status"] == RideStatus.REQUESTED) {
-                    onRideRequested(rideRef)
-                } else if (snapshot.data!!["status"] == RideStatus.ACCEPTED) {
-                    onRideAccepted(rideRef)
-                } else if (snapshot.data!!["status"] == RideStatus.ARRIVED) {
-                    onRideArrived(rideRef)
-                } else if (snapshot.data!!["status"] == RideStatus.COMPLETED) {
-                    onRideCompleted(rideRef)
-                } else {
-                    onRideCancelled(rideRef)
+                when (snapshot.data!!["status"]) {
+                    RideStatus.REQUESTED -> onRideRequested(rideRef)
+                    RideStatus.ACCEPTED -> onRideAccepted(rideRef)
+                    RideStatus.ARRIVED -> onRideArrived(rideRef)
+                    RideStatus.COMPLETED -> onRideCompleted(rideRef)
+                    RideStatus.CANCELLED -> onRideCancelled(rideRef)
                 }
             }
         }
