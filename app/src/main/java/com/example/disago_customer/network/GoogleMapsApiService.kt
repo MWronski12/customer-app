@@ -73,7 +73,7 @@ suspend fun getGoogleMapsApiResponseRelevantData(
         val response = GoogleMapsApi.retrofitService.get(origin, destination, key)
 
         // Check if Api call was successful and provided routes info
-        if (response.routes.isEmpty() && response.status == "OK") {
+        if (response.routes.isEmpty() || response.status != "OK") {
             Log.d("DEBUG", "Google maps api call failed!")
             return null
         }

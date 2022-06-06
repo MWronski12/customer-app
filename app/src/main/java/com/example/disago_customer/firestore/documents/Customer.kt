@@ -3,7 +3,6 @@ package com.example.disago_customer.firestore.documents
 import com.example.disago_customer.firestore.fields.DisabilityType
 
 class Customer(
-//    val id: String,
     var name: String,
     var surname: String,
     var email: String,

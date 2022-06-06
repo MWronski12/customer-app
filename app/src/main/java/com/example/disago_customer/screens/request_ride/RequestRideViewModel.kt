@@ -6,9 +6,8 @@ import com.example.disago_customer.firestore.DisagoApi
 import com.example.disago_customer.firestore.documents.Ride
 import com.example.disago_customer.firestore.fields.RideStatus
 import com.example.disago_customer.network.getGoogleMapsApiResponseRelevantData
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -55,18 +54,14 @@ class RequestRideViewModel : ViewModel() {
 
     fun onConfirmRideRequest(signedInUserId: String) {
 
-        val ride = Ride(
-            db.collection("customers").document(signedInUserId),
-            null,
-            FieldValue.serverTimestamp(),
-            // TODO: Better way to do this
-            originLocation,
-            destinationLocation,
-            price.value!!,
-            RideStatus.REQUESTED
-        )
-
         viewModelScope.launch(Dispatchers.IO) {
+            val ride = Ride(
+                customer = db.collection("customers").document(signedInUserId),
+                originLocation = originLocation,
+                destinationLocation = destinationLocation,
+                price = price.value!!
+            )
+
             val newRide = disagoApi.createRide(ride)
             if (newRide != null) {
                 Log.d("DEBUG", "Ride id: ${newRide.id}")

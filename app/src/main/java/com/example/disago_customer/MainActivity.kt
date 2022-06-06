@@ -8,8 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.disago_customer.firestore.DisagoApi
 import com.example.disago_customer.firestore.documents.Customer
 import com.example.disago_customer.firestore.documents.Driver
+import com.example.disago_customer.firestore.documents.Ride
 import com.example.disago_customer.firestore.fields.RideStatus
 import com.example.disago_customer.network.getGoogleMapsApiResponseRelevantData
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -27,11 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val docRef = db.collection("test").document("123")
-//        GlobalScope.launch(Dispatchers.IO) {
-//            docRef.set(hashMapOf<String, Any>("bro" to "eat sth!")).await()
-//        }
-
+        GlobalScope.launch(Dispatchers.IO) {
+            val rides = api.listCustomerRides("mZRxkL5MdDjyM34EXdd9")
+            for (ride in rides) {
+                Log.d("DEBUG", "${ride?.destinationLocation}")
+            }
+        }
 
 
 //        val response = getGoogleMapsApiResponseRelevantData("Warszawa", "Krakow", lifecycleScope)
@@ -42,7 +45,6 @@ class MainActivity : AppCompatActivity() {
 //        Log.d("DEBUG", "Duration value in seconds: ${response?.duration?.value}")
 //        Log.d("DEBUG", "Start address: ${response?.startAddress}")
 //        Log.d("DEBUG", "End Address: ${response?.endAddress}")
-
 
 
 //          CREATE CUSTOMER TEST
