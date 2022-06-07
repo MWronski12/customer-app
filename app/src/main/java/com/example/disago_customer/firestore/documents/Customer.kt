@@ -9,4 +9,15 @@ class Customer(
     var phoneNumber: String,
     var disabilityType: String,
     var balance: Double = 0.0
-)
+) {
+    override fun toString(): String {
+        return "Customer={" +
+                "name=$name, " +
+                "surname=$surname, " +
+                "email=$email, " +
+                "phoneNumber=$phoneNumber, " +
+                "disabilityType=$disabilityType, " +
+                "balance=$balance" +
+                "}"
+    }
+}

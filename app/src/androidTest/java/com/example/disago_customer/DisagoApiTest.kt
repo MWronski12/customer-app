@@ -1,6 +1,6 @@
 package com.example.disago_customer
 
-import androidx.test.platform.app.InstrumentationRegistry
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.disago_customer.firestore.DisagoApi
 import com.example.disago_customer.firestore.documents.Customer
@@ -8,20 +8,18 @@ import com.example.disago_customer.firestore.documents.Driver
 import com.example.disago_customer.firestore.documents.Ride
 import com.example.disago_customer.firestore.fields.DisabilityType
 import com.example.disago_customer.firestore.fields.RideStatus
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.junit.After
-
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 import java.io.IOException
 
+
+// THESE TESTS ARE NOT CONFIGURED PROPERLY
+// BUT BODIES OF THE FUNCTIONS CAN BE USED AS A TEST IN MainActivity.onCreate
 @RunWith(AndroidJUnit4::class)
 class DisagoApiTest {
 
@@ -30,96 +28,140 @@ class DisagoApiTest {
 
     @Test
     @Throws(IOException::class)
-    fun insertAndGetCustomer() {
+    fun testCustomerRideInteractions() {
 
-        // Normally this would be signedInUserId
-        // We want to createCustomer only after new user signs up
-        // So we can store additional user data
-        val testUserId = "testUserId"
+        val testUserId = "testuserid"
+        val tag = "DISAGO_API_TEST"
         GlobalScope.launch(Dispatchers.IO) {
-            val newCustomer = Customer(
+            val customer = Customer(
                 "test",
                 "user",
                 "testuser@gmail.com",
-                "+420 666 666 666",
+                "Black Tesla Model X",
                 DisabilityType.DWARFISM,
                 69.00
             )
 
-            val testCustomerRef = api.createCustomer(newCustomer, testUserId)
-            assertEquals(testUserId, testCustomerRef?.id)
+            val newCustomerRef = api.createCustomer(customer, testUserId)
+            val newCustomer = api.getCustomer(newCustomerRef.id)
+            Log.d(tag, "New customer: $newCustomer")
 
-            val testCustomer = api.getCustomer(testUserId)
-            assertEquals(newCustomer, testCustomer)
+            customer.email = "changedemail@gmail.com"
+            api.updateCustomer(customer, testUserId)
+            val updatedCustomer = api.getCustomer(testUserId)
+            Log.d(tag, "Updated customer: $updatedCustomer")
+
+            api.updateCustomerBalance(testUserId, -10.0)
+            Log.d(
+                tag,
+                "${newCustomer!!.balance} == ${api.getCustomer(testUserId)!!.balance} - 10.0"
+            )
+
+            val ride = Ride(
+                customer = newCustomerRef,
+                originLocation = "Warszawa",
+                destinationLocation = "Krakow",
+                price = 10.0
+            )
+
+            val newRideRef = api.createRide(ride)
+            val newRide = api.getRide(newRideRef)
+            Log.d(tag, "new ride: $newRide")
+
+            val newCustomerRides = api.getCustomerRides(testUserId)
+            Log.d(tag, "new ride (from list): ${newCustomerRides[0]}")
+
+            api.updateRideStatus(newRideRef.id, RideStatus.ACCEPTED)
+            Log.d(tag, "Accepted == ${api.getRide(newRideRef)!!.status}")
         }
     }
 
     @Test
     @Throws(IOException::class)
-    fun insertAndGetDriver() {
+    fun testDriverRideInteractions() {
 
-        // Normally this would be signedInUserId
-        // We want to createCustomer only after new user signs up
-        // So we can store additional user data
-        val testUserId = "testUserId"
+        val testUserId = "testuserid"
+        val tag = "DISAGO_API_TEST"
         GlobalScope.launch(Dispatchers.IO) {
-            val newDriver = Driver(
+            val driver = Driver(
                 "test",
                 "user",
+                "testuser@gmail.com",
+                "Black Tesla Model X",
+                DisabilityType.DWARFISM,
+                69.00
+            )
+
+            val newDriverRef = api.createDriver(driver, testUserId)
+            val newDriver = api.getDriver(newDriverRef.id)
+            Log.d(tag, "New driver: $newDriver")
+
+            driver.email = "changedemail@gmail.com"
+            api.updateDriver(driver, testUserId)
+            val updatedDriver = api.getDriver(testUserId)
+            Log.d(tag, "Updated driver: $updatedDriver")
+
+            api.updateDriverBalance(testUserId, -10.0)
+            Log.d(tag, "${newDriver!!.balance} == ${api.getDriver(testUserId)!!.balance} - 10.0")
+
+            val ride = Ride(
+                customer = newDriverRef,
+                driver = newDriverRef,
+                originLocation = "Warszawa",
+                destinationLocation = "Krakow",
+                price = 10.0
+            )
+
+            val newRideRef = api.createRide(ride)
+            val newRide = api.getRide(newRideRef)
+            Log.d(tag, "new ride: $newRide")
+
+            val newDriverRides = api.getDriverRides(testUserId)
+            Log.d(tag, "new ride (from list): ${newDriverRides[0]}")
+
+            api.updateRideStatus(newRideRef.id, RideStatus.ACCEPTED)
+            Log.d(tag, "Accepted == ${api.getRide(newRideRef)!!.status}")
+        }
+    }
+
+    @Test
+    @kotlin.jvm.Throws(IOException::class)
+    fun testReviewInteractions() {
+        val tag = "DISAGO_API_TEST"
+        val testDriverId = "testdriverid"
+        val testCustomerId = "testcustomerid"
+        GlobalScope.launch(Dispatchers.IO) {
+            val customer = Customer(
+                "test",
+                "customer",
+                "testuser@gmail.com",
+                "+420 666 666 666",
+                DisabilityType.DWARFISM,
+                69.00
+            )
+            val driver = Driver(
+                "test",
+                "driver",
                 "testuser@gmail.com",
                 "Black Tesla Model X",
                 "+420 666 666 666",
                 69.00
             )
 
-            val testDriverRef = api.createDriver(newDriver, testUserId)
-            assertEquals(testUserId, testDriverRef?.id)
-
-            val testDriver = api.getDriver(testUserId)
-            assertEquals(newDriver, testDriver)
-        }
-    }
-
-    @Test
-    @Throws(IOException::class)
-    fun insertGetAndUpdateRide() {
-
-        // Ride can only be created by a user requesting it, so we have to create this user first
-        val testUserId = "testUserId"
-        GlobalScope.launch(Dispatchers.IO) {
-            val newCustomer = Customer(
-                "test",
-                "user",
-                "testuser@gmail.com",
-                "+420 666 666 666",
-                DisabilityType.DWARFISM,
-                69.00
+            val newDriverRef = api.createDriver(driver, testDriverId)
+            val newCustomerRef = api.createCustomer(customer, testDriverId)
+            val ride = Ride(
+                customer = newCustomerRef,
+                driver = newDriverRef,
+                originLocation = "Warsaw",
+                destinationLocation = "Cracow",
+                price = 420.0
             )
+            for (i in 1..5) {
+                api.createReview(ride, i)
+            }
 
-            val testCustomerRef = api.createCustomer(newCustomer, testUserId)
-            assertTrue(testCustomerRef != null)
-
-            val newRide = Ride(
-                testCustomerRef!!,
-                null,
-                FieldValue.serverTimestamp(),
-                "Warsaw",
-                "Cracow",
-                420.00,
-                RideStatus.REQUESTED
-            )
-
-            val testRideRef = api.createRide(newRide)
-            assertTrue(testRideRef != null)
-
-            val testRide = api.getRide(testRideRef!!)
-            assertEquals(newRide, testRide)
-
-            assertTrue(api.updateRideStatus(testRideRef.id, RideStatus.ACCEPTED))
-
-            val updatedRide = api.getRide(testRideRef)
-            assertTrue(updatedRide != null)
-            assertEquals(updatedRide!!.status, RideStatus.ACCEPTED)
+            Log.d(tag, api.getDriversAverageReviewRating(newDriverRef))
         }
     }
 }

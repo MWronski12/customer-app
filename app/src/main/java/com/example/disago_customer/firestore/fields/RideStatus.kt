@@ -1,9 +1,9 @@
 package com.example.disago_customer.firestore.fields
 
 object RideStatus {
-    val REQUESTED: String = "Requested";
-    val ACCEPTED: String = "Accepted";
-    val ARRIVED: String = "Arrived";
-    val COMPLETED: String = "Completed";
-    val CANCELLED: String = "Cancelled";
+    const val REQUESTED: String = "Requested";
+    const val ACCEPTED: String = "Accepted";
+    const val ARRIVED: String = "Arrived";
+    const val COMPLETED: String = "Completed";
+    const val CANCELLED: String = "Cancelled";
 }

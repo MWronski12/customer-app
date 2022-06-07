@@ -104,7 +104,6 @@ class RequestRideViewModel : ViewModel() {
 
     private fun onRideCompleted(rideRef: DocumentReference) {
         _status.value = RideStatus.COMPLETED
-
     }
 
     private fun onRideCancelled(rideRef: DocumentReference) {

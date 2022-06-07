@@ -1,11 +1,11 @@
 package com.example.disago_customer.firestore.fields
 
 object DisabilityType {
-    val BLINDNESS: String = "Blindness";
-    val WHEELCHAIR: String = "Wheelchair";
-    val DWARFISM: String = "Dwarfism";
-    val ALCOHOLISM: String = "Alcoholism";
-    val ADDICTION: String = "Addiction";
-    val NYMPHOMANIA: String = "Nymphomania";
+    const val BLINDNESS: String = "Blindness";
+    const val WHEELCHAIR: String = "Wheelchair";
+    const val DWARFISM: String = "Dwarfism";
+    const val ALCOHOLISM: String = "Alcoholism";
+    const val ADDICTION: String = "Addiction";
+    const val NYMPHOMANIA: String = "Nymphomania";
 }
 
