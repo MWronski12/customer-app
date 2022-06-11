@@ -8,4 +8,3 @@ object DisabilityType {
     const val ADDICTION: String = "Addiction";
     const val NYMPHOMANIA: String = "Nymphomania";
 }
-
